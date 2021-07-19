@@ -1,0 +1,4 @@
+build/
+db.sqlite
+node_modules/
+
