@@ -1,3 +1,4 @@
+tsoa/
 build/
 db.sqlite
 node_modules/
