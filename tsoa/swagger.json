@@ -13,7 +13,53 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/user-permission/get-all": {
+		"/api/users/signUp": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Permission"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"username",
+									"password",
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/users/get-all": {
 			"get": {
 				"operationId": "GetAllUser",
 				"responses": {
@@ -33,7 +79,7 @@
 				"parameters": []
 			}
 		},
-		"/api/user-permission/create": {
+		"/api/users/create": {
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {
@@ -78,7 +124,7 @@
 				}
 			}
 		},
-		"/api/user-permission/update/{id}": {
+		"/api/users/update/{id}": {
 			"put": {
 				"operationId": "UpdateUser",
 				"responses": {
@@ -132,7 +178,7 @@
 				}
 			}
 		},
-		"/api/user-permission/delete/{id}": {
+		"/api/users/delete/{id}": {
 			"delete": {
 				"operationId": "DeleteUser",
 				"responses": {

@@ -33,12 +33,12 @@ export class UserPermissionController extends Controller {
 
   @Post('/create/')
   public async createUser(@Body() body: { email: string, roles: string[] }) {
-    return createUser({ email: body.email, roles: body.roles });
+    return createUser({ email: body.email });
   }
 
   @Put('/update/{id}/')
   public async updateUser(@Query('id') id: string, @Body() body: { email: string, roles: string[] }) {
-    return updateUser({ id: Number(id), email: body.email, roles: body.roles });
+    return updateUser({ id: Number(id), email: body.email});
   }
 
   @Delete('/delete/{id}/')
