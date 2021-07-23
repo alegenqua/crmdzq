@@ -1,4 +1,8 @@
 import { User } from '@entity/user';
+import Mailgun from 'mailgun-js';
+import { SignUpDTO } from './user.dto';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const getAllUser = async () => {
   try {
@@ -8,44 +12,24 @@ export const getAllUser = async () => {
   }
 }
 
-export const createUser = async ({ email }: { email: string}) => {
-  try {
-    const _newUser = new User();
-    _newUser['email'] = email;
-    
-    await _newUser.save();
+export const singUpUser = async (body:SignUpDTO) => {
+  const _newUser = new User();
+  _newUser.activated = false;
+  _newUser.email = body.email;
+  _newUser.name = body.name;
+  _newUser.surname = body.surname;
+  _newUser.refreshToken = uuidv4();
+  
+  const mailgun = new Mailgun({apiKey: process.env.MAILGUN_API_KEY!, 
+    domain:"sandbox9115bd93ad154fbc87f655ec4eaad651.mailgun.org"});
 
-    return await User.findOne({
-      where: { email: email }
-    });
-
-  } catch (e) {
-    console.error(e);
+  const data = {
+      from: "admin@crmdzq.it",
+      to: body.email,
+      subject: "Registrazione CRMDZQ",
+      text:`Benvenuto in CRMDZQ, il tuo token è ${_newUser.refreshToken}`
   }
-}
-
-export const updateUser = async ({ id, email }: { id: number, email: string }) => {
-  try {
-    const _updatedUser = await User.findOne({ where: { id }});
-    if (!_updatedUser) return { message: "User is not found!" };
-    _updatedUser['email'] = email;
-    
-    await _updatedUser.save();
-
-    return await User.findOne({
-      where: { email: email }      
-    });
-
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-export const deleteUser = async ({ id }: { id: number }) => {
-  try {
-    const foundUser = await User.findOne({ id: id });
-    return await foundUser?.remove();
-  } catch (e) {
-    console.error(e);
-  }
+  
+  await mailgun.messages().send(data);
+  _newUser.save();
 }
