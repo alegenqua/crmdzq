@@ -12,7 +12,7 @@ class Database {
 
   private connectToDB(): void {
     createConnection({
-      type: envString("mysql", "sqlite"),
+      type: envString("postgres", "sqlite"),
       host: envString(process.env.DATABASE_HOST!, ""),
       port: envString(Number(process.env.DATABASE_PORT!), 0),
       username: envString(process.env.DATABASE_USERNAME!, ""),
